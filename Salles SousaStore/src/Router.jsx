@@ -42,7 +42,7 @@ export default function Router() {
 
         {/* ADMIN */}
         <Route
-          path="/admin"
+          path="/admin/*"
           element={
             <ProtectedRoute>
               <Admin />

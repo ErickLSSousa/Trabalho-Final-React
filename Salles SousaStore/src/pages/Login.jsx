@@ -4,32 +4,10 @@ export default function Login({ onLogin }) {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [dob, setDob] = useState("");
     const [errors, setErrors] = useState({});
-    const [isMinor, setIsMinor] = useState(false);
     const [message, setMessage] = useState("");
 
-    useEffect(() => {
-        setMessage("");
-        if (!dob) {
-            setIsMinor(false);
-            return;
-        }
-        const age = computeAge(dob);
-        setIsMinor(age < 18);
-    }, [dob]);
 
-    function computeAge(isoDateString) {
-        const today = new Date();
-        const birth = new Date(isoDateString);
-        let age = today.getFullYear() - birth.getFullYear();
-        const m = today.getMonth() - birth.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
-            age--;
-        }
-        return age;
-        //função para calcular idade a partir da data de nascimento:)
-    }
 
     function validateFields() {
         const errs = {};
@@ -52,6 +30,8 @@ export default function Login({ onLogin }) {
 
         setErrors(errs);
         return Object.keys(errs).length === 0;
+
+        //função para validar os campos do formulário(Adoro If else)
     }
 
     function handleSubmit(e) {
@@ -64,6 +44,8 @@ export default function Login({ onLogin }) {
         if (typeof onLogin === "function") {
             onLogin({ username });
         }
+        //função para lidar com o envio do formulário(ai bruneca ja to comentando tudo pra
+        //ficar mais facil de entender)
 
     }
 
@@ -109,19 +91,6 @@ export default function Login({ onLogin }) {
                     aria-describedby={errors.password ? "password-error" : undefined}
                 />
                 {errors.password && <div id="password-error" style={styles.error}>{errors.password}</div>}
-
-                <label htmlFor="dob" style={styles.label}>Data de nascimento</label>
-                <input
-                    id="dob"
-                    name="dob"
-                    type="date"
-                    value={dob}
-                    onChange={(e) => setDob(e.target.value)}
-                    style={styles.input}
-                    aria-invalid={!!errors.dob || isMinor}
-                    aria-describedby={(errors.dob || isMinor) ? "dob-error" : undefined}
-                />
-                {(errors.dob || isMinor) && <div id="dob-error" style={styles.error}>{errors.dob ?? "Usuários menores de 18 anos não podem acessar o site."}</div>}
 
                 <button
                     type="submit"

@@ -1,14 +1,67 @@
 import React, { useState } from "react";
 import { userAuth } from "../api/userAuth";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
 
 export default function Signup() {
   const nav = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const [isMinor, setIsMinor] = useState(false);
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState(null);
+  const [dob, setDob] = useState("");
+
+   useEffect(() => {
+        setMessage("");
+        if (!dob) {
+            setIsMinor(false);
+            return;
+        }
+        const age = computeAge(dob);
+        setIsMinor(age < 18);
+    }, [dob]);
+
+    function computeAge(isoDateString) {
+        const today = new Date();
+        const birth = new Date(isoDateString);
+        let age = today.getFullYear() - birth.getFullYear();
+        const m = today.getMonth() - birth.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+            age--;
+        }
+        return age;
+        //função para calcular idade a partir da data de nascimento:)
+    }
+
+
+        function validateFields() {
+        const errs = {};
+
+        if (!username || username.trim().length < 3) {
+            errs.username = "O nome de usuário deve ter ao menos 3 caracteres.";
+        }
+        if (!password || password.length < 6) {
+            errs.password = "A senha deve conter ao menos 6 caracteres.";
+        }
+        if (!dob) {
+            errs.dob = "Data de nascimento é obrigatória.";
+        } else if (computeAge(dob) < 0) {
+            errs.dob = "Data inválida.";
+        }
+
+        if (computeAge(dob) < 18) {
+            errs.age = "Você precisa ser maior de 18 anos para acessar o site.";
+        }
+
+        setError(errs);
+        return Object.keys(errs).length === 0;
+
+        //função para validar os campos do formulário(Adoro If else)
+    }
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -43,6 +96,17 @@ export default function Signup() {
             Email
             <input value={email} onChange={(e) => setEmail(e.target.value)} />
           </label>
+
+          <label htmlFor="dob">Data de nascimento
+          <input
+            id="dob"
+            name="dob"
+            type="date"
+            value={dob}
+            onChange={(e) => setDob(e.target.value)}
+          />
+          </label>
+          {(error?.dob || isMinor) && <div id="dob-error" style={styles.error}>{error.dob ?? "Usuários menores de 18 anos não podem acessar o site."}</div>}
 
           <label className="label">
             Senha
