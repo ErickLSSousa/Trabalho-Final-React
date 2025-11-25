@@ -28,6 +28,7 @@ export default function Login({ onLogin }) {
             age--;
         }
         return age;
+        //função para calcular idade a partir da data de nascimento:)
     }
 
     function validateFields() {
