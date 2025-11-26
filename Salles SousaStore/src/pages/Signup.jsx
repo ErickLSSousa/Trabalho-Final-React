@@ -22,7 +22,7 @@ export default function Signup() {
             return;
         }
         const age = computeAge(dob);
-        setIsMinor(age < 18);
+        setIsMinor(age < 16);
     }, [dob]);
 
     function computeAge(isoDateString) {
@@ -53,8 +53,8 @@ export default function Signup() {
             errs.dob = "Data inválida.";
         }
 
-        if (computeAge(dob) < 18) {
-            errs.age = "Você precisa ser maior de 18 anos para acessar o site.";
+        if (computeAge(dob) < 16) {
+            errs.age = "Você precisa ser maior de 16 anos para acessar o site.";
         }
 
         setError(errs);
@@ -123,7 +123,7 @@ export default function Signup() {
             onChange={(e) => setDob(e.target.value)}
           />
           </label>
-          {(error?.dob || isMinor) && <div id="dob-error" style={styles.error}>{error.dob ?? "Usuários menores de 18 anos não podem acessar o site."}</div>}
+          {(error?.dob || isMinor) && <div className="error">{error ?? "Usuários menores de 16 anos não podem acessar o site."}</div>}
 
           <label className="label">
             Senha

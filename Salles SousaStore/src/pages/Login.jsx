@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login({ onLogin }) {
     const [username, setUsername] = useState("");
@@ -6,8 +7,7 @@ export default function Login({ onLogin }) {
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
     const [message, setMessage] = useState("");
-
-
+    const nav = useNavigate();
 
     function validateFields() {
         const errs = {};
@@ -15,82 +15,67 @@ export default function Login({ onLogin }) {
         if (!username || username.trim().length < 3) {
             errs.username = "O nome de usuário deve ter ao menos 3 caracteres.";
         }
+
+        if (!email || !email.includes("@")) {
+            errs.email = "Digite um email válido.";
+        }
+
         if (!password || password.length < 6) {
             errs.password = "A senha deve conter ao menos 6 caracteres.";
         }
 
         setErrors(errs);
         return Object.keys(errs).length === 0;
-
-        //função para validar os campos do formulário(Adoro If else)
     }
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (!validateFields()) {
-            return;
-        }
+        if (!validateFields()) return;
 
-        setMessage("Login realizado com sucesso. Redirecionando...");
+        setMessage("Login realizado com sucesso! Redirecionando...");
+
         if (typeof onLogin === "function") {
             onLogin({ username });
         }
-        //função para lidar com o envio do formulário(ai bruneca ja to comentando tudo pra
-        //ficar mais facil de entender)
 
+        // redireciona imediatamente
+        nav("/");
     }
 
     return (
         <div style={styles.container}>
-            <form onSubmit={handleSubmit} style={styles.form} aria-label="Login form">
+            <form onSubmit={handleSubmit} style={styles.form}>
                 <h1 style={styles.title}>Salles SousaStore</h1>
 
-                <label htmlFor="username" style={styles.label}>Nome de usuário</label>
+                <label style={styles.label}>Nome de usuário</label>
                 <input
-                    id="username"
-                    name="username"
-                    type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     style={styles.input}
-                    aria-invalid={!!errors.username}
-                    aria-describedby={errors.username ? "username-error" : undefined}
                 />
-                {errors.username && <div id="username-error" style={styles.error}>{errors.username}</div>}
-                <label htmlFor="email" style={styles.label}>Email</label>
+                {errors.username && <p style={styles.error}>{errors.username}</p>}
+
+                <label style={styles.label}>Email</label>
                 <input
-                    id="email"
-                    name="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     style={styles.input}
-                    aria-invalid={!!errors.email}
-                    aria-describedby={errors.email ? "email-error" : undefined}
                 />
-                {errors.email && <div id="email-error" style={styles.error}>{errors.email}</div>}
+                {errors.email && <p style={styles.error}>{errors.email}</p>}
 
-                <label htmlFor="password" style={styles.label}>Senha</label>
+                <label style={styles.label}>Senha</label>
                 <input
-                    id="password"
-                    name="password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     style={styles.input}
-                    aria-invalid={!!errors.password}
-                    aria-describedby={errors.password ? "password-error" : undefined}
                 />
-                {errors.password && <div id="password-error" style={styles.error}>{errors.password}</div>}
+                {errors.password && <p style={styles.error}>{errors.password}</p>}
 
-                <button
-                    type="submit"
-                    style={styles.button}
-                >
-                    Entrar
-                </button>
+                <button type="submit" style={styles.button}>Entrar</button>
 
-                {message && <div style={styles.info}>{message}</div>}
+                {message && <p style={styles.info}>{message}</p>}
             </form>
         </div>
     );
@@ -102,62 +87,46 @@ const styles = {
         alignItems: "center",
         justifyContent: "center",
         minHeight: "70vh",
-        padding: 16,
     },
     form: {
-        maxWidth: 420,
         width: "100%",
+        maxWidth: 420,
         background: "#fff",
-        borderRadius: 8,
         padding: 24,
-        boxShadow: "0 1px 6px rgba(0,0,0,0.08)",
-        boxSizing: "border-box",
-        fontFamily: "sans-serif",
+        borderRadius: 8,
+        boxShadow: "0 1px 6px rgba(0,0,0,0.1)",
     },
     title: {
-        margin: "0 0 16px 0",
         textAlign: "center",
-        color: "#2b2b2b",
-        fontSize: 22,
+        marginBottom: 20,
     },
     label: {
-        display: "block",
-        fontSize: 14,
         marginTop: 10,
-        marginBottom: 6,
-        color: "#333",
+        display: "block",
     },
     input: {
         width: "100%",
-        padding: "8px 10px",
-        fontSize: 14,
+        padding: 8,
+        marginTop: 4,
         borderRadius: 4,
         border: "1px solid #ccc",
-        boxSizing: "border-box",
     },
     button: {
-        marginTop: 16,
+        marginTop: 20,
         width: "100%",
-        padding: "10px 12px",
+        padding: 10,
         background: "#0074D9",
         color: "#fff",
         border: "none",
         borderRadius: 4,
-        fontSize: 16,
-        cursor: "pointer",
-    },
-    buttonDisabled: {
-        background: "#b5cbe6",
-        cursor: "not-allowed",
     },
     error: {
-        color: "#d32f2f",
+        color: "red",
         fontSize: 13,
-        marginTop: 6,
+        marginTop: 4,
     },
     info: {
         marginTop: 12,
-        fontSize: 14,
-        color: "#0d6efd",
-    }
+        color: "#0074D9",
+    },
 };
