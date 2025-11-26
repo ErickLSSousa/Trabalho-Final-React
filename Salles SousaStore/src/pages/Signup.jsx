@@ -16,7 +16,7 @@ export default function Signup() {
   const [dob, setDob] = useState("");
 
    useEffect(() => {
-        setMessage("");
+        
         if (!dob) {
             setIsMinor(false);
             return;
@@ -53,15 +53,15 @@ export default function Signup() {
             errs.dob = "Data inválida.";
         }
 
-        if (computeAge(dob) < 16) {
-            errs.age = "Você precisa ser maior de 16 anos para acessar o site.";
+        if (computeAge(dob) < 18) {
+            errs.age = "Você precisa ser maior de 18 anos para acessar o site.";
         }
 
         setError(errs);
         return Object.keys(errs).length === 0;
 
         //função para validar os campos do formulário(Adoro If else)
-    }
+    
 
     
     function handleSubmit(e) {
@@ -83,6 +83,8 @@ export default function Signup() {
   async function handleSubmit(e) {
     e.preventDefault();
     setError(null);
+
+    if (!validateFields()) return;
 
     if (pass !== confirm) {
       setError("As senhas não coincidem.");
