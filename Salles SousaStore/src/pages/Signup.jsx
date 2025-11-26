@@ -15,7 +15,7 @@ export default function Signup() {
   const [dob, setDob] = useState("");
 
    useEffect(() => {
-        setMessage("");
+        
         if (!dob) {
             setIsMinor(false);
             return;
@@ -37,35 +37,39 @@ export default function Signup() {
     }
 
 
-        function validateFields() {
-        const errs = {};
-
-        if (!username || username.trim().length < 3) {
-            errs.username = "O nome de usuário deve ter ao menos 3 caracteres.";
-        }
-        if (!password || password.length < 6) {
-            errs.password = "A senha deve conter ao menos 6 caracteres.";
-        }
-        if (!dob) {
-            errs.dob = "Data de nascimento é obrigatória.";
-        } else if (computeAge(dob) < 0) {
-            errs.dob = "Data inválida.";
-        }
-
-        if (computeAge(dob) < 18) {
-            errs.age = "Você precisa ser maior de 18 anos para acessar o site.";
-        }
-
-        setError(errs);
-        return Object.keys(errs).length === 0;
+    function validateFields() {
+      const errs = {};
+    
+      if (!name || name.trim().length < 3) {
+        errs.name = "O nome deve ter ao menos 3 caracteres.";
+      }
+    
+      if (!pass || pass.length < 6) {
+        errs.pass = "A senha deve conter ao menos 6 caracteres.";
+      }
+    
+      if (!dob) {
+        errs.dob = "Data de nascimento é obrigatória.";
+      }
+    
+      if (computeAge(dob) < 18) {
+        errs.age = "Você precisa ser maior de 18 anos.";
+      }
+    
+      setError(errs);
+      return Object.keys(errs).length === 0;
+    }
+    
 
         //função para validar os campos do formulário(Adoro If else)
-    }
+    
 
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError(null);
+
+    if (!validateFields()) return;
 
     if (pass !== confirm) {
       setError("As senhas não coincidem.");
