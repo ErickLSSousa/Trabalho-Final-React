@@ -272,4 +272,4 @@ function CartDrawer({ cart, onClose, onRemove, total }) {
       </div>
     </motion.aside>
   );
-}
+ }
