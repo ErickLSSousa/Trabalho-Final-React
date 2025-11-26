@@ -7,6 +7,7 @@ import { useEffect } from "react";
 export default function Signup() {
   const nav = useNavigate();
   const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [isMinor, setIsMinor] = useState(false);
@@ -21,7 +22,7 @@ export default function Signup() {
             return;
         }
         const age = computeAge(dob);
-        setIsMinor(age < 18);
+        setIsMinor(age < 16);
     }, [dob]);
 
     function computeAge(isoDateString) {
@@ -37,32 +38,46 @@ export default function Signup() {
     }
 
 
-    function validateFields() {
-      const errs = {};
-    
-      if (!name || name.trim().length < 3) {
-        errs.name = "O nome deve ter ao menos 3 caracteres.";
-      }
-    
-      if (!pass || pass.length < 6) {
-        errs.pass = "A senha deve conter ao menos 6 caracteres.";
-      }
-    
-      if (!dob) {
-        errs.dob = "Data de nascimento é obrigatória.";
-      }
-    
-      if (computeAge(dob) < 18) {
-        errs.age = "Você precisa ser maior de 18 anos.";
-      }
-    
-      setError(errs);
-      return Object.keys(errs).length === 0;
-    }
-    
+        function validateFields() {
+        const errs = {};
+
+        if (!username || username.trim().length < 3) {
+            errs.username = "O nome de usuário deve ter ao menos 3 caracteres.";
+        }
+        if (!password || password.length < 6) {
+            errs.password = "A senha deve conter ao menos 6 caracteres.";
+        }
+        if (!dob) {
+            errs.dob = "Data de nascimento é obrigatória.";
+        } else if (computeAge(dob) < 0) {
+            errs.dob = "Data inválida.";
+        }
+
+        if (computeAge(dob) < 16) {
+            errs.age = "Você precisa ser maior de 16 anos para acessar o site.";
+        }
+
+        setError(errs);
+        return Object.keys(errs).length === 0;
 
         //função para validar os campos do formulário(Adoro If else)
+    }
+
     
+    function handleSubmit(e) {
+        e.preventDefault();
+        if (!validateFields()) {
+            return;
+        }
+
+        setMessage("Login realizado com sucesso. Redirecionando...");
+        if (typeof onLogin === "function") {
+            onLogin({ username });
+        }
+        //função para lidar com o envio do formulário(ai bruneca ja to comentando tudo pra
+        //ficar mais facil de entender)
+
+    }
 
 
   async function handleSubmit(e) {
@@ -101,7 +116,7 @@ export default function Signup() {
             <input value={email} onChange={(e) => setEmail(e.target.value)} />
           </label>
 
-          <label htmlFor="dob">Data de nascimento
+          <label htmlFor="dob" className="label">Data de nascimento
           <input
             id="dob"
             name="dob"
@@ -110,7 +125,7 @@ export default function Signup() {
             onChange={(e) => setDob(e.target.value)}
           />
           </label>
-          {(error?.dob || isMinor) && <div id="dob-error" style={styles.error}>{error.dob ?? "Usuários menores de 18 anos não podem acessar o site."}</div>}
+          {(error?.dob || isMinor) && <div className="error">{error ?? "Usuários menores de 16 anos não podem acessar o site."}</div>}
 
           <label className="label">
             Senha
