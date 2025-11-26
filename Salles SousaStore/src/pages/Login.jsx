@@ -18,15 +18,6 @@ export default function Login({ onLogin }) {
         if (!password || password.length < 6) {
             errs.password = "A senha deve conter ao menos 6 caracteres.";
         }
-        if (!dob) {
-            errs.dob = "Data de nascimento é obrigatória.";
-        } else if (computeAge(dob) < 0) {
-            errs.dob = "Data inválida.";
-        }
-
-        if (computeAge(dob) < 18) {
-            errs.age = "Você precisa ser maior de 18 anos para acessar o site.";
-        }
 
         setErrors(errs);
         return Object.keys(errs).length === 0;
@@ -94,8 +85,7 @@ export default function Login({ onLogin }) {
 
                 <button
                     type="submit"
-                    disabled={isMinor}
-                    style={{ ...styles.button, ...(isMinor ? styles.buttonDisabled : {}) }}
+                    style={styles.button}
                 >
                     Entrar
                 </button>

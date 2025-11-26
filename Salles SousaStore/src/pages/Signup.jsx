@@ -7,6 +7,7 @@ import { useEffect } from "react";
 export default function Signup() {
   const nav = useNavigate();
   const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [isMinor, setIsMinor] = useState(false);
@@ -62,6 +63,22 @@ export default function Signup() {
         //função para validar os campos do formulário(Adoro If else)
     }
 
+    
+    function handleSubmit(e) {
+        e.preventDefault();
+        if (!validateFields()) {
+            return;
+        }
+
+        setMessage("Login realizado com sucesso. Redirecionando...");
+        if (typeof onLogin === "function") {
+            onLogin({ username });
+        }
+        //função para lidar com o envio do formulário(ai bruneca ja to comentando tudo pra
+        //ficar mais facil de entender)
+
+    }
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -97,7 +114,7 @@ export default function Signup() {
             <input value={email} onChange={(e) => setEmail(e.target.value)} />
           </label>
 
-          <label htmlFor="dob">Data de nascimento
+          <label htmlFor="dob" className="label">Data de nascimento
           <input
             id="dob"
             name="dob"
