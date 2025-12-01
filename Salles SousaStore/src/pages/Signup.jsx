@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { userAuth } from "../api/userAuth";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-
 
 export default function Signup() {
   const nav = useNavigate();
@@ -15,90 +13,130 @@ export default function Signup() {
   const [error, setError] = useState(null);
   const [dob, setDob] = useState("");
 
-   useEffect(() => {
-        
-        if (!dob) {
-            setIsMinor(false);
-            return;
-        }
-        const age = computeAge(dob);
-        setIsMinor(age < 16);
-    }, [dob]);
+  // === ESTADO QUE FALTAVA ===
+  const [showSuccessCard, setShowSuccessCard] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
+  // ===========================
 
-    function computeAge(isoDateString) {
-        const today = new Date();
-        const birth = new Date(isoDateString);
-        let age = today.getFullYear() - birth.getFullYear();
-        const m = today.getMonth() - birth.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
-            age--;
-        }
-        return age;
-        //função para calcular idade a partir da data de nascimento:)
+  useEffect(() => {
+    if (!dob) {
+      setIsMinor(false);
+      return;
+    }
+    const age = computeAge(dob);
+    setIsMinor(age < 16);
+  }, [dob]);
+
+  function computeAge(isoDateString) {
+    const today = new Date();
+    const birth = new Date(isoDateString);
+    let age = today.getFullYear() - birth.getFullYear();
+    const m = today.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    return age;
+  }
+
+  function validateFields() {
+    const errs = {};
+
+    if (!name || name.trim().length < 3) {
+      errs.name = "O nome de usuário deve ter ao menos 3 caracteres.";
+    }
+    if (!pass || pass.length < 6) {
+      errs.password = "A senha deve conter ao menos 6 caracteres.";
+    }
+    if (!dob) {
+      errs.dob = "Data de nascimento é obrigatória.";
+    } else if (computeAge(dob) < 0) {
+      errs.dob = "Data inválida.";
     }
 
-
-        function validateFields() {
-        const errs = {};
-
-        if (!username || username.trim().length < 3) {
-            errs.username = "O nome de usuário deve ter ao menos 3 caracteres.";
-        }
-        if (!password || password.length < 6) {
-            errs.password = "A senha deve conter ao menos 6 caracteres.";
-        }
-        if (!dob) {
-            errs.dob = "Data de nascimento é obrigatória.";
-        } else if (computeAge(dob) < 0) {
-            errs.dob = "Data inválida.";
-        }
-
-        if (computeAge(dob) < 16) {
-            errs.age = "Você precisa ser maior de 16 anos para acessar o site.";
-        }
-
-        setError(errs);
-        return Object.keys(errs).length === 0;
-
-        //função para validar os campos do formulário(Adoro If else)
+    if (computeAge(dob) < 16) {
+      errs.age = "Você precisa ser maior de 16 anos para acessar o site.";
+    }
+    if (pass !== confirm) {
+      errs.password = "As senhas não coincidem.";
     }
 
-    
-    function handleSubmit(e) {
-        e.preventDefault();
-        if (!validateFields()) {
-            return;
-        }
-
-        setMessage("Login realizado com sucesso. Redirecionando...");
-        if (typeof onLogin === "function") {
-            onLogin({ username });
-        }
-        //função para lidar com o envio do formulário(ai bruneca ja to comentando tudo pra
-        //ficar mais facil de entender)
-
-    }
-
+    setFieldErrors(errs);
+    return Object.keys(errs).length === 0;
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError(null);
+    setFieldErrors({});
 
     if (!validateFields()) return;
 
-    if (pass !== confirm) {
-      setError("As senhas não coincidem.");
-      return;
-    }
+    setIsSubmitting(true);
 
     try {
-      await userAuth.signup({ name, email, password: pass });
-      alert("Conta criada! Faça login.");
-      nav("/login");
+      await userAuth.signup({ name, email, password: pass, confirm: confirm });
+
+      setMessage("Conta criada com sucesso!");
+      setShowSuccessCard(true);
+
     } catch (err) {
-      setError(err.message);
+      setError(err?.message ?? "Erro ao criar conta.");
+    } finally {
+      setIsSubmitting(false);
     }
   }
+
+  function handleCloseSuccess() {
+    setShowSuccessCard(false); 
+  }
+
+  const successStyles = {
+    overlay: {
+      position: "fixed",
+      inset: 0,
+      backgroundColor: "rgba(0,0,0,0.35)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 9999,
+      padding: 16,
+    },
+    card: {
+      background: "#fff",
+      borderRadius: 8,
+      padding: 24,
+      maxWidth: 420,
+      width: "100%",
+      boxShadow: "0 6px 18px rgba(0,0,0,0.18)",
+      textAlign: "center",
+    },
+    title: { margin: 0, fontSize: 20, color: "#2b2b2b" },
+    text: { marginTop: 12, color: "#333" },
+    actions: {
+      display: "flex",
+      gap: 8,
+      marginTop: 18,
+      justifyContent: "center",
+    },
+    btnPrimary: {
+      background: "#0074D9",
+      color: "#fff",
+      border: "none",
+      padding: "10px 14px",
+      borderRadius: 6,
+      cursor: "pointer",
+    },
+    btnSecondary: {
+      background: "#f2f2f2",
+      color: "#333",
+      border: "none",
+      padding: "10px 14px",
+      borderRadius: 6,
+      cursor: "pointer",
+    },
+  };
+
 
   return (
     <main className="container login-page">
@@ -109,6 +147,7 @@ export default function Signup() {
           <label className="label">
             Nome
             <input value={name} onChange={(e) => setName(e.target.value)} />
+            {fieldErrors.name && <div className="error">{fieldErrors.name}</div>}
           </label>
 
           <label className="label">
@@ -116,32 +155,61 @@ export default function Signup() {
             <input value={email} onChange={(e) => setEmail(e.target.value)} />
           </label>
 
-          <label htmlFor="dob" className="label">Data de nascimento
-          <input
-            id="dob"
-            name="dob"
-            type="date"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-          />
+          <label className="label">
+            Data de nascimento
+            <input
+              type="date"
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
+            />
+            {fieldErrors.dob && <div className="error">{fieldErrors.dob}</div>}
+            {fieldErrors.age && <div className="error">{fieldErrors.age}</div>}
           </label>
-          {(error?.dob || isMinor) && <div className="error">{error ?? "Usuários menores de 16 anos não podem acessar o site."}</div>}
 
           <label className="label">
             Senha
-            <input type="password" value={pass} onChange={(e) => setPass(e.target.value)} />
+            <input
+              type="password"
+              value={pass}
+              onChange={(e) => setPass(e.target.value)}
+            />
           </label>
 
           <label className="label">
             Confirmar senha
-            <input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
+            <input
+              type="password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+            />
           </label>
 
-          <button className="btn" type="submit">Cadastrar</button>
+          <button className="btn" type="submit">
+            Cadastrar
+          </button>
 
           {error && <p className="error">{error}</p>}
         </form>
       </div>
+
+{/* //card de cadastro */}
+      {showSuccessCard && (
+        <div style={successStyles.overlay}>
+          <div style={successStyles.card}>
+            <h3 style={successStyles.title}>Conta criada com sucesso!</h3>
+            <p style={successStyles.text}>Seu cadastro foi concluído.</p>
+
+            <div style={successStyles.actions}>
+              <button
+                style={successStyles.btnPrimary}
+                onClick={handleCloseSuccess}
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
