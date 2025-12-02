@@ -12,9 +12,6 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
  
-  
-  
-  
   if (loading) return <Loader />;
   if (error) return <div className="error">{error.message}</div>;
 

@@ -2,14 +2,15 @@
 import React from "react";
 import Router from "./Router";
 import { CartProvider } from "./context/CartContext";
-import MercadoMock from './mercadomock';
+import { div } from "framer-motion/client";
 
 export default function App() {
   return (
-   
-    
+   <div>
+
    <CartProvider>
       <Router />
     </CartProvider>
-  );
+   </div>
+ );
 }
