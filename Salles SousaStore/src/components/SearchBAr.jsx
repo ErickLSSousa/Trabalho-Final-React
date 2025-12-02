@@ -1,29 +1,23 @@
-import { useState } from "react";
+import { useSearch } from "../context/SearchContext";
+import { Search } from "lucide-react";
 
-export default function SearchBAr({ onSearch }) {
-  const [text, setText] = useState("");
-
-  function handleChange(e) {
-    const value = e.target.value;
-    setText(value);
-    onSearch(value); // envia o termo de busca para o componente pai
-  }
+export default function SearchBar() {
+  const { search, setSearch } = useSearch();
 
   return (
-    <div style={{ padding: "10px", background: "#fff" }}>
-      <input
-        type="text"
-        placeholder="Buscar produtos..."
-        value={text}
-        onChange={handleChange}
-        style={{
-          width: "100%",
-          padding: "12px",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
-          fontSize: "16px"
-        }}
-      />
+    <div className="relative w-full max-w-xl mx-auto">
+      <div className="flex items-center border rounded-md bg-white shadow-sm overflow-hidden">
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="flex-1 px-4 py-2 outline-none"
+          placeholder="Buscar produtos..."
+        />
+        <button className="px-4 py-2 border-l flex items-center gap-2">
+          <Search size={16} />
+          Buscar
+        </button>
+      </div>
     </div>
   );
 }

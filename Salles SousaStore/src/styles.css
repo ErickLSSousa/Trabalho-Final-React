@@ -23,30 +23,45 @@ body {
   color: #111;
 }
 
+/* Container global (NÃO usado no header, pois sobrescrevemos abaixo) */
 .container {
-  max-width: 1150px;
+  max-width: none;
   margin: 30px auto;
   padding: 0 16px;
+  width: 100%;
 }
 
 /* ================================
-   HEADER — (ESTÁTICO, NÃO SEGUE A TELA)
+   HEADER (CORRIGIDO)
 =================================== */
 .header {
+  width: 100% !important;
   background: var(--accent);
-  padding: 18px 0;
+  padding: 20px 0;
   box-shadow: var(--shadow);
+  position: relative;
+  z-index: 10;
 }
 
+/* Remove margem do .container DENTRO do header */
+.header > .container {
+  margin: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 16px !important;
+}
+
+/* layout interno do header */
 .header-inner {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: flex !important;
+  align-items: center !important;
+  gap: 20px !important;
+  width: 100% !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
 }
 
+/* logo */
 .brand {
   font-weight: 900;
   font-size: 38px;
@@ -54,8 +69,25 @@ body {
   text-decoration: none;
   letter-spacing: 2px;
   text-transform: uppercase;
+  margin-right: 12px;
 }
 
+/* barra de pesquisa ocupa o meio */
+.header-search {
+  flex: 1 1 0 !important;
+  min-width: 200px;
+}
+
+/* navegação direita */
+.nav-right {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  white-space: nowrap !important;
+}
+
+/* evitar que "Criar conta / Entrar" estourem */
 .nav-right a,
 .nav-right button {
   margin-left: 14px;
@@ -65,12 +97,37 @@ body {
   background: transparent;
   border: none;
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
 }
 
-/* botão sair */
+/* hover */
 .nav-right button:hover,
 .nav-right a:hover {
   opacity: 0.7;
+}
+
+/* MOBILE FIX */
+@media (max-width: 720px) {
+  .header-inner {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .header-search {
+    width: 100% !important;
+  }
+
+  .nav-right {
+    justify-content: flex-end !important;
+    width: 100%;
+  }
+
+  .brand {
+    margin-bottom: 6px;
+  }
 }
 
 /* ================================
@@ -253,10 +310,8 @@ body {
 }
 
 /* ================================
-   LOGIN/CADASTRO (SEU ORIGINAL)
-   *** APENAS APRIMORADO ***
+   LOGIN/CADASTRO
 =================================== */
-
 .login-page {
   min-height: calc(100vh - 80px);
   display: flex;

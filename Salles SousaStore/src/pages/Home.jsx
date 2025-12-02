@@ -5,7 +5,7 @@ import Loader from "../components/Loader";
 import ProductCard from "../components/ProductCard";
 import { isDeleted } from "../storage/anyStorage";
 import CategoryFilter from "../components/CategoryFilter";
-import SearchBar from "../components/SearchBAr";
+import SearchBar from "../components/SearchBar";
 
 export default function Home() {
   const { data: products, loading, error } = useFetch(() => api.getProducts(), []);
