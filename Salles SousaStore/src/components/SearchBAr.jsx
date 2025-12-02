@@ -7,16 +7,14 @@ export default function SearchBar() {
   return (
     <div className="relative w-full max-w-xl mx-auto">
       <div className="flex items-center border rounded-md bg-white shadow-sm overflow-hidden">
+        <Search size={16} className="ml-3 text-gray-500" />
+
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 px-4 py-2 outline-none"
+          className="flex-1 px-3 py-2 outline-none"
           placeholder="Buscar produtos..."
         />
-        <button className="px-4 py-2 border-l flex items-center gap-2">
-          <Search size={16} />
-          Buscar
-        </button>
       </div>
     </div>
   );
