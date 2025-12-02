@@ -5,11 +5,16 @@ import Loader from "../components/Loader";
 import ProductCard from "../components/ProductCard";
 import { isDeleted } from "../storage/anyStorage";
 import CategoryFilter from "../components/CategoryFilter";
+import SearchBar from "../components/SearchBAr";
 
 export default function Home() {
   const { data: products, loading, error } = useFetch(() => api.getProducts(), []);
   const [activeCategory, setActiveCategory] = useState("all");
-
+  const [searchTerm, setSearchTerm] = useState("");
+ 
+  
+  
+  
   if (loading) return <Loader />;
   if (error) return <div className="error">{error.message}</div>;
 
