@@ -1,5 +1,3 @@
-
-// SISTEMA DE LIXEIRA
 export function getDeletedProducts() {
     return JSON.parse(localStorage.getItem("deleted_products") || "[]");
   }

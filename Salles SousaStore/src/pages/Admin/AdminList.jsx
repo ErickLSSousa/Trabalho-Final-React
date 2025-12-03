@@ -10,7 +10,7 @@ export default function AdminList() {
   async function handleDelete(id) {
     if (!confirm("Tem certeza que deseja excluir?")) return;
 
-    // marca como "deletado"
+    
     addDeletedProduct(id);
 
     alert("Movido para a lixeira.");

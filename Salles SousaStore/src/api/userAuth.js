@@ -1,7 +1,6 @@
-// src/api/userAuth.js
 import { getUsers, addUser, getLoggedUser, setLoggedUser, logoutUser } from "../storage/anyStorage";
 
-// valida Email
+
 function isEmailValid(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }

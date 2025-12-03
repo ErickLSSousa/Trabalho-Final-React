@@ -23,14 +23,14 @@ export default function Router() {
     <BrowserRouter>
       <Header />
       <Routes>
-        {/* rotas públicas */}
+        
         <Route path="/" element={<Home />} />
         <Route path="/produto/:id" element={<ProductDetails />} />
         <Route path="/carrinho" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* Perfil (protegido) */}
+       
         <Route
           path="/perfil"
           element={
@@ -40,7 +40,7 @@ export default function Router() {
           }
         />
 
-        {/* ADMIN */}
+       
         <Route
           path="/admin/*"
           element={

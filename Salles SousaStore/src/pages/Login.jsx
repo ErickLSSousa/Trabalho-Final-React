@@ -38,7 +38,7 @@ export default function Login({ onLogin }) {
             onLogin({ username });
         }
 
-        // redireciona imediatamente
+       
         nav("/");
     }
 

@@ -1,4 +1,3 @@
-// src/api/api.js
 const BASE_URL = "https://fakestoreapi.com";
 
 async function request(endpoint, method = "GET", body = null, retries = 1) {
@@ -14,7 +13,7 @@ async function request(endpoint, method = "GET", body = null, retries = 1) {
       const text = await res.text();
       throw new Error(`HTTP ${res.status} - ${text}`);
     }
-    // FakeStore sometimes returns plain object or string token
+    
     const txt = await res.text();
     try {
       return JSON.parse(txt);

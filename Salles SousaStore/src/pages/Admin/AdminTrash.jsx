@@ -1,4 +1,3 @@
-// src/pages/Admin/AdminTrash.jsx
 import React, { useEffect, useState } from "react";
 import { api } from "../../api/api";
 import { getDeletedProducts, restoreProduct } from "../../storage/anyStorage";

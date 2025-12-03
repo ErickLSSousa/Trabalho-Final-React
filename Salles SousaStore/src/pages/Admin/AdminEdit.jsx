@@ -1,4 +1,3 @@
-// src/pages/Admin/AdminEdit.jsx
 import { api } from "../../api/api";
 import { useFetch } from "../../hooks/useFetch";
 import { useParams, useNavigate } from "react-router-dom";

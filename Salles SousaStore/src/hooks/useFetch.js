@@ -1,4 +1,3 @@
-// src/hooks/useFetch.js
 import { useEffect, useRef, useState } from "react";
 
 const cache = new Map();
@@ -34,7 +33,7 @@ export function useFetch(fetcher, deps = []) {
       abortRef.current = true;
       mounted = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  
   }, deps);
 
   return { data, loading, error };

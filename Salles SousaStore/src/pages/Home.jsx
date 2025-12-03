@@ -5,13 +5,13 @@ import Loader from "../components/Loader";
 import ProductCard from "../components/ProductCard";
 import { isDeleted } from "../storage/anyStorage";
 import CategoryFilter from "../components/CategoryFilter";
-import { useSearch } from "../context/SearchContext";   // <<< IMPORTANTE
+import { useSearch } from "../context/SearchContext";  
 
 export default function Home() {
   const { data: products, loading, error } = useFetch(() => api.getProducts(), []);
   const [activeCategory, setActiveCategory] = useState("all");
 
-  // 🔥 Usa o valor digitado na barra de pesquisa global
+  
   const { search } = useSearch();
 
   if (loading) return <Loader />;
@@ -19,15 +19,15 @@ export default function Home() {
 
   const categories = [...new Set(products.map((p) => p.category))];
 
-  // Começa com todos os produtos não deletados
+  
   let visibleProducts = products.filter((p) => !isDeleted(p.id));
 
-  // Filtro de categoria
+  
   if (activeCategory !== "all") {
     visibleProducts = visibleProducts.filter((p) => p.category === activeCategory);
   }
 
-  // 🔥 Filtro da barra de pesquisa
+ 
   if (search.trim() !== "") {
     visibleProducts = visibleProducts.filter((p) =>
       p.title.toLowerCase().includes(search.toLowerCase())

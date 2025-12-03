@@ -1,4 +1,3 @@
-// src/pages/ProductDetails.jsx
 import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../api/api";

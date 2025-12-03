@@ -1,5 +1,3 @@
-// src/storage/anyStorage.js
-
 const DELETED_KEY = "deleted_products_v1";
 
 

@@ -13,11 +13,9 @@ export default function Signup() {
   const [error, setError] = useState(null);
   const [dob, setDob] = useState("");
 
-  // === ESTADO QUE FALTAVA ===
   const [showSuccessCard, setShowSuccessCard] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
-  // ===========================
 
   useEffect(() => {
     if (!dob) {
@@ -192,7 +190,6 @@ export default function Signup() {
         </form>
       </div>
 
-{/* //card de cadastro */}
       {showSuccessCard && (
         <div style={successStyles.overlay}>
           <div style={successStyles.card}>

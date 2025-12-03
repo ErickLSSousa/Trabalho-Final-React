@@ -1,5 +1,3 @@
-// src/utils/categoryMap.js
-
 export const categoryMap = {
     "electronics": "Tecnologia",
     "jewelery": "Joias",

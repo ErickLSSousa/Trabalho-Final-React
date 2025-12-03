@@ -1,8 +1,5 @@
-/* ================================
-   VARIÁVEIS GERAIS
-=================================== */
 :root {
-  --accent: #2563eb;      /* azul principal */
+  --accent: #2563eb;     
   --accent-dark: #1d4ed8;
   --danger: #dc2626;
   --bg: #f5f6fa;
@@ -11,9 +8,6 @@
   --shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* ================================
-   RESET
-=================================== */
 * { box-sizing: border-box; }
 
 body {
@@ -23,7 +17,6 @@ body {
   color: #111;
 }
 
-/* Container global (NÃO usado no header, pois sobrescrevemos abaixo) */
 .container {
   max-width: none;
   margin: 30px auto;
@@ -31,9 +24,6 @@ body {
   width: 100%;
 }
 
-/* ================================
-   HEADER (CORRIGIDO)
-=================================== */
 .header {
   width: 100% !important;
   background: var(--accent);
@@ -43,7 +33,6 @@ body {
   z-index: 10;
 }
 
-/* Remove margem do .container DENTRO do header */
 .header > .container {
   margin: 0 !important;
   max-width: none !important;
@@ -51,7 +40,6 @@ body {
   padding: 0 16px !important;
 }
 
-/* layout interno do header */
 .header-inner {
   display: flex !important;
   align-items: center !important;
@@ -61,7 +49,7 @@ body {
   box-sizing: border-box !important;
 }
 
-/* logo */
+
 .brand {
   font-weight: 900;
   font-size: 38px;
@@ -72,13 +60,11 @@ body {
   margin-right: 12px;
 }
 
-/* barra de pesquisa ocupa o meio */
 .header-search {
   flex: 1 1 0 !important;
   min-width: 200px;
 }
 
-/* navegação direita */
 .nav-right {
   flex: 0 0 auto !important;
   display: flex !important;
@@ -87,7 +73,6 @@ body {
   white-space: nowrap !important;
 }
 
-/* evitar que "Criar conta / Entrar" estourem */
 .nav-right a,
 .nav-right button {
   margin-left: 14px;
@@ -102,13 +87,11 @@ body {
   max-width: 140px;
 }
 
-/* hover */
 .nav-right button:hover,
 .nav-right a:hover {
   opacity: 0.7;
 }
 
-/* MOBILE FIX */
 @media (max-width: 720px) {
   .header-inner {
     flex-direction: column !important;
@@ -130,9 +113,6 @@ body {
   }
 }
 
-/* ================================
-   GRID DE PRODUTOS
-=================================== */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -172,7 +152,6 @@ body {
   margin: 6px 0;
 }
 
-/* BUTTON */
 .btn {
   background: var(--accent);
   color: white;
@@ -188,9 +167,6 @@ body {
   background: var(--accent-dark);
 }
 
-/* ================================
-   LOADER
-=================================== */
 .loader {
   text-align: center;
   font-weight: bold;
@@ -198,9 +174,6 @@ body {
   font-size: 20px;
 }
 
-/* ================================
-   CARRINHO
-=================================== */
 .cart-list {
   display: flex;
   flex-direction: column;
@@ -222,9 +195,6 @@ body {
   object-fit: contain;
 }
 
-/* ================================
-   ADMIN NAV
-=================================== */
 .admin-nav {
   display: flex;
   gap: 14px;
@@ -244,9 +214,6 @@ body {
   background: var(--accent-dark);
 }
 
-/* ================================
-   ADMIN GRID
-=================================== */
 .admin-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -285,9 +252,6 @@ body {
   cursor: pointer;
 }
 
-/* ================================
-   CATEGORY FILTER
-=================================== */
 .category-filter {
   display: flex;
   gap: 12px;
@@ -309,9 +273,6 @@ body {
   color: white;
 }
 
-/* ================================
-   LOGIN/CADASTRO
-=================================== */
 .login-page {
   min-height: calc(100vh - 80px);
   display: flex;
